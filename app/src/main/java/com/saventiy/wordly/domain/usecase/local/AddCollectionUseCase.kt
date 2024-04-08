@@ -7,6 +7,5 @@ import javax.inject.Inject
 class AddCollectionUseCase @Inject constructor(
     private val repository: CollectionRepository
 ) {
-
-    operator fun invoke(collection: Collection) = repository.addCollection(collection)
+    suspend operator fun invoke(collection: Collection) = repository.addCollection(collection)
 }

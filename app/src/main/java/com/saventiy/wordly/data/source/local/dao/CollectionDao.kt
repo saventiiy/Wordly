@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface CollectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(collection: CollectionEntity)
+    suspend fun insert(collection: CollectionEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(collection: CollectionEntity)

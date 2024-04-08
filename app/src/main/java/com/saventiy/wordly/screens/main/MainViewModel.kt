@@ -1,33 +1,25 @@
 package com.saventiy.wordly.screens.main
 
-import android.content.Intent
-import android.net.Uri
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saventiy.wordly.data.model.dto.Collection
-import com.saventiy.wordly.domain.usecase.local.AddCollectionUseCase
 import com.saventiy.wordly.domain.usecase.local.GetAllCollectionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val addCollectionUseCase: AddCollectionUseCase,
-    val getAllCollectionsUseCase: GetAllCollectionsUseCase
+    getAllCollectionsUseCase: GetAllCollectionsUseCase
 ) : ViewModel() {
 
-    fun pushCollection(){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val collection = Collection("init", listOf("word", "word1", "word2", "word3", "word4", "word5", "word6", "word7"), isActive = true)
-                addCollectionUseCase.invoke(collection)
-            }
-        }
-    }
-}
+    val uiState: StateFlow<MainUiState> = getAllCollectionsUseCase.invoke()
+        .map<List<Collection>, MainUiState> { MainUiState.Success(collections = it) }
+        .catch { e -> emit(MainUiState.Error(e)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)
 
+}

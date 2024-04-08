@@ -10,7 +10,7 @@ class CollectionRepositoryImpl @Inject constructor(
     private val collectionDao: CollectionDao
 ) : CollectionRepository {
 
-    override fun addCollection(collection: Collection) =
+    override suspend fun addCollection(collection: Collection) =
         collectionDao.insert(collection.toCollectionEntity())
 
     override fun updateCollection(collection: Collection) =
@@ -22,19 +22,3 @@ class CollectionRepositoryImpl @Inject constructor(
     override fun getCollection(id: Int): Flow<Collection> =
         collectionDao.getCollection(id).map { it.toCollection() }
 }
-
-//class CollectionRepositoryImpl @Inject constructor(
-//    private val collectionDao: CollectionDao
-//) : CollectionRepository {
-//    override fun addWord(word: String) = collectionDao.insert(com.saventiy.wordly.data.model.entity.WordEntity(
-//        word = word
-//    ))
-//
-//    override fun updateWord(word: String) = collectionDao.update(com.saventiy.wordly.data.model.entity.WordEntity(word = word))
-//
-//    override fun getAllWords(): Flow<List<com.saventiy.wordly.data.model.dto.WordDto>> =
-//        collectionDao.getAll().map { it.map { it.toCollection() } }
-//
-//    override fun getWord(id: Int): Flow<com.saventiy.wordly.data.model.dto.WordDto> =
-//        collectionDao.getWord(id).map { it.toCollection() }
-//}

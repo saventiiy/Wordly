@@ -36,6 +36,14 @@ android {
 
 dependencies {
 
+    val composeBom = platform("androidx.compose:compose-bom:2024.03.00")
+    implementation(composeBom)
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+
     implementation(Dependencies.Android.material)
     implementation(Dependencies.Android.material)
     implementation(Dependencies.Android.constraint)
