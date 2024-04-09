@@ -23,7 +23,7 @@ fun CollectionScreen(
         CollectionUiState.Success -> CollectionView(
             words = words,
             onAddWordClicked = { words.add(it) },
-            createCollectionClicked = { name, collection ->
+            onCreateCollectionClicked = { name, collection ->
                 viewModel.createCollection(name = name, words = collection)
                 navController.popBackStack()
             }
