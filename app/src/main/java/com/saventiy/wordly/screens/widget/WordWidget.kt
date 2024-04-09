@@ -2,8 +2,10 @@ package com.saventiy.wordly.screens.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
@@ -13,13 +15,18 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
-import androidx.glance.appwidget.updateAll
+import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
+import com.saventiy.wordly.R
+import com.saventiy.wordly.ui.theme.Alto
 
 object WordWidget : GlanceAppWidget() {
 
@@ -36,12 +43,29 @@ object WordWidget : GlanceAppWidget() {
         val state = currentState<Preferences>()
         val word = state[stringPreferencesKey("word")]
         Column(
-            modifier = GlanceModifier
-                .fillMaxSize(),
+            modifier = GlanceModifier.fillMaxSize(),
             verticalAlignment = Alignment.Vertical.CenterVertically,
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
         ) {
-            Text(word.toString())
+            if (word.isNullOrBlank()) {
+                Text(
+                    text = stringResource(id = R.string.you_aint_add),
+                    style = TextStyle(
+                        color = ColorProvider(color = Color.Black),
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            } else {
+                Text(
+                    text = word.toString(),
+                    style = TextStyle(
+                        color = ColorProvider(color = Color.White),
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
         }
     }
 }

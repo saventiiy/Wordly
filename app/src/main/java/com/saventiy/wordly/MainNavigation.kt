@@ -13,7 +13,7 @@ fun MainNavigation() {
 
     NavHost(navController = navController, startDestination = "main") {
         composable("main") { MainScreen(navController = navController) }
-        composable("collection") { CollectionScreen() }
+        composable("collection") { CollectionScreen(navController = navController) }
     }
 
 }

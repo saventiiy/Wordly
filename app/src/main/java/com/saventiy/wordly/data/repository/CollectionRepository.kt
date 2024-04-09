@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface CollectionRepository {
     suspend fun addCollection(collection: Collection)
     fun updateCollection(collection: Collection)
+
+    suspend fun deleteCollection(collection: Collection)
+
     fun getAllCollections(): Flow<List<Collection>>
     fun getCollection(id: Int): Flow<Collection>
 }

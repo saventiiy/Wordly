@@ -17,6 +17,9 @@ class CollectionViewModel @Inject constructor(private val addCollectionUseCase: 
 
     val words: StateFlow<MutableList<String>> = MutableStateFlow(mutableListOf())
     fun createCollection(name: String, words: MutableList<String>) {
+        if(name.isEmpty() || words.isEmpty()){
+//            uiState. = CollectionUiState.Error()
+        }
         viewModelScope.launch {
             addCollectionUseCase.invoke(
                 collection = Collection(

@@ -16,6 +16,9 @@ class CollectionRepositoryImpl @Inject constructor(
     override fun updateCollection(collection: Collection) =
         collectionDao.update(collection.toCollectionEntity())
 
+    override suspend fun deleteCollection(collection: Collection) =
+        collectionDao.delete(collection.toCollectionEntity())
+
     override fun getAllCollections(): Flow<List<Collection>> =
         collectionDao.getAll().map { it.map { it.toCollection() } }
 

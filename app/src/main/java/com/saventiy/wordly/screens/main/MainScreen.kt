@@ -20,7 +20,10 @@ fun MainScreen(
         MainUiState.Loading -> {}
         is MainUiState.Success -> MainView(
             collections = (collections as MainUiState.Success).collections.toMutableList(),
-            navController = navController
+            navController = navController,
+            onDeleteClicked = {
+                viewModel.deleteCollection(it)
+            }
         )
     }
 }

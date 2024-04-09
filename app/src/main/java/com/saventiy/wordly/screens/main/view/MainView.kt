@@ -7,14 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.rememberDismissState
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.saventiy.wordly.data.model.dto.Collection
-import com.saventiy.wordly.ui.views.SwipeBackground
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -34,15 +28,14 @@ import com.saventiy.wordly.ui.views.SwipeBackground
 fun MainView(
     modifier: Modifier = Modifier,
     collections: MutableList<Collection>,
-    navController: NavController
+    navController: NavController,
+    onDeleteClicked: (Collection) -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    navController.navigate("collection")
-                },
+                onClick = { navController.navigate("collection") }
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
@@ -60,50 +53,11 @@ fun MainView(
                 }
                 items(count = collections.size) { index ->
                     val currentItem by rememberUpdatedState(index)
-                    val dismissState = rememberDismissState(
-                        confirmStateChange = {
-                            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
-                                collections.removeAt(currentItem)
-                                true
-                            } else false
-                        }
-                    )
-
-                    if (dismissState.isDismissed(DismissDirection.EndToStart) ||
-                        dismissState.isDismissed(DismissDirection.StartToEnd)
-                    ) {
-                        collections.removeAt(currentItem)
-                    }
-
-                    SwipeToDismiss(
-                        state = dismissState,
-                        modifier = Modifier
-                            .padding(vertical = 1.dp)
-                            .animateItemPlacement(),
-                        directions = setOf(
-                            DismissDirection.StartToEnd,
-                            DismissDirection.EndToStart
-                        ),
-                        dismissThresholds = { direction ->
-                            FractionalThreshold(
-                                if (direction == DismissDirection.StartToEnd) 0.66f else 0.50f
-                            )
-                        },
-                        background = {
-                            SwipeBackground(dismissState)
-                        },
-                        dismissContent = {
-                            CollectionItem(
-                                collection = collections[currentItem]
-                            ) {
-                            }
-                        }
-                    )
+                    CollectionItem(collection = collections[currentItem]) {}
                 }
                 item {
                     Spacer(modifier = Modifier.padding(25.dp))
                 }
             }
-        }
-    )
+        })
 }

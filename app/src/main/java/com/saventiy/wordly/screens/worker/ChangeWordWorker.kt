@@ -7,6 +7,7 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.saventiy.wordly.data.model.dto.Collection
 import com.saventiy.wordly.domain.usecase.local.GetAllCollectionsUseCase
 import com.saventiy.wordly.screens.widget.WordWidget
 import com.saventiy.wordly.screens.widget.WordWidgetReceiver.Companion.updateWidget
@@ -26,10 +27,9 @@ internal class ChangeWordWorker @AssistedInject constructor(
     override suspend fun doWork(): Result =
         try {
             getAllCollectionsUseCase.invoke()
-                .onEach {
-                    val word = it[0].collection.random()
-                    Log.e("WORD", word)
-                    updateWidget(word, context)
+                .onEach { collections ->
+                    val word = collections.find { it.isActive }?.collection?.random()
+                    updateWidget(word.toString(), context)
                 }
                 .collect()
             Result.success()

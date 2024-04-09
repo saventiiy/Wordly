@@ -1,6 +1,5 @@
 package com.saventiy.wordly.screens.main.view
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -42,14 +41,12 @@ fun CollectionItem(
     Card(
         shape = RoundedCornerShape(25.dp),
         colors = CardDefaults.cardColors(containerColor = Alto, contentColor = Alto),
-        modifier = Modifier.pointerInput(Unit) {
-            detectTapGestures(
-                onLongPress = {
-                    Log.e("ASDF", "Long click")
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onLongPress = {
                     collection.isActive = !collection.isActive
-                }
-            )
-        }
+                })
+            }
             .border(
                 width = 2.dp,
                 color = if (collection.isActive) Color.Black else Color.Unspecified,
@@ -60,8 +57,8 @@ fun CollectionItem(
             .clickable {
                 onClick.invoke()
                 clicked.value = !clicked.value
-            }
-    ) {
+            }) {
+
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -91,7 +88,7 @@ fun CollectionItem(
             }
 
             Text(
-                text = collection.collection.toString(),
+                text = collection.collection.joinToString(", "),
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = if (clicked.value) Int.MAX_VALUE else 1,
                 overflow = TextOverflow.Ellipsis,
@@ -105,5 +102,11 @@ fun CollectionItem(
 @Preview
 @Composable
 fun CollectionItemPreview() {
-//    CollectionItem()
+    CollectionItem(
+        collection = Collection(
+            name = "collection",
+            collection = mutableListOf("word", "word1", "word2", "word3"),
+            isActive = true
+        )
+    ) {}
 }
