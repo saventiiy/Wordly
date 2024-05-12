@@ -14,15 +14,10 @@ fun CollectionScreen(
     viewModel: CollectionViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val words by viewModel.words.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (uiState) {
-        is CollectionUiState.Error -> {}
-        CollectionUiState.Loading -> {}
-        CollectionUiState.Success -> CollectionView(
-            words = words,
-            onAddWordClicked = { words.add(it) },
+        CollectionUiState -> CollectionView(
             onCreateCollectionClicked = { name, collection ->
                 viewModel.createCollection(name = name, words = collection)
                 navController.popBackStack()

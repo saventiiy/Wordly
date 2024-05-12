@@ -11,30 +11,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.saventiy.wordly.R
 import com.saventiy.wordly.ui.theme.Alto
+import com.saventiy.wordly.views.FirstButton
+import com.saventiy.wordly.views.OutlinedTextFieldWordly
+import com.saventiy.wordly.views.SecondButton
 
 @Composable
 fun CollectionView(
     modifier: Modifier = Modifier,
-    words: MutableList<String>,
-    onAddWordClicked: (String) -> Unit,
     onCreateCollectionClicked: (String, MutableList<String>) -> Unit
 ) {
     Column(
@@ -46,6 +43,7 @@ fun CollectionView(
     ) {
         val name = remember { mutableStateOf(TextFieldValue("")) }
         val word = remember { mutableStateOf(TextFieldValue("")) }
+        val words = remember { mutableStateListOf("") }
 
         Spacer(modifier = Modifier.weight(1f))
         TextFieldsView(name = name, word = word, words = words)
@@ -59,7 +57,7 @@ fun CollectionView(
                 )
             },
             onAddWordClicked = {
-                onAddWordClicked.invoke(word.value.text)
+                words.add(word.value.text)
                 word.value = TextFieldValue("")
             })
     }
@@ -121,55 +119,7 @@ fun ButtonsView(
 @Preview
 @Composable
 fun Preview() {
-    CollectionView(words = mutableListOf("word", "word1", "words2"),
-        onAddWordClicked = {},
+    CollectionView(
         onCreateCollectionClicked = { _, _ -> })
 }
 
-
-@Composable
-fun FirstButton(
-    modifier: Modifier = Modifier,
-    text: Int,
-    enabled: Boolean = true,
-    onClick: () -> Unit
-) {
-    Button(modifier = modifier, enabled = enabled, onClick = { onClick.invoke() }) {
-        Text(text = stringResource(id = text))
-    }
-}
-
-@Composable
-fun SecondButton(
-    modifier: Modifier = Modifier,
-    icon: Int,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = modifier,
-        onClick = { onClick.invoke() }) {
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            modifier = Modifier.padding(10.dp)
-        )
-    }
-}
-
-@Composable
-fun OutlinedTextFieldWordly(
-    modifier: Modifier = Modifier,
-    label: Int,
-    onValueChanged: (String) -> Unit
-) {
-    val text = remember { mutableStateOf(TextFieldValue("")) }
-    OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
-        value = text.value,
-        onValueChange = {
-            text.value = it
-            onValueChanged.invoke(it.text)
-        },
-        label = { Text(text = stringResource(id = label)) }
-    )
-}

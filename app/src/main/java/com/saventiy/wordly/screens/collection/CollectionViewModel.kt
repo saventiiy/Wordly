@@ -13,9 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CollectionViewModel @Inject constructor(private val addCollectionUseCase: AddCollectionUseCase) :
     ViewModel() {
-    val uiState: StateFlow<CollectionUiState> = MutableStateFlow(CollectionUiState.Success)
+    val uiState: StateFlow<CollectionUiState> = MutableStateFlow(CollectionUiState)
 
-    val words: StateFlow<MutableList<String>> = MutableStateFlow(mutableListOf())
     fun createCollection(name: String, words: MutableList<String>) {
         if(name.isEmpty() || words.isEmpty()){
 //            uiState. = CollectionUiState.Error()
