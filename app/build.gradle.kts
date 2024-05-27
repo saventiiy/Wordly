@@ -3,7 +3,6 @@ plugins {
     id("convention.compose")
     id("dagger.hilt.android.plugin")
     kotlin("kapt")
-
 }
 
 android {
@@ -35,6 +34,9 @@ android {
 }
 
 dependencies {
+//    https://patilshreyas.github.io/compose-report-to-html/use/using-gradle-plugin/#__tabbed_1_2
+    apply(plugin = "dev.shreyaspatil.compose-compiler-report-generator")
+
 
     val composeBom = platform("androidx.compose:compose-bom:2024.03.00")
     implementation(composeBom)
