@@ -42,8 +42,8 @@ fun CollectionView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val name = remember { mutableStateOf(TextFieldValue("")) }
-        val word = remember { mutableStateOf(TextFieldValue("")) }
-        val words = remember { mutableStateListOf("") }
+        val word = remember { mutableStateOf(("")) }
+        val words = remember { mutableStateListOf<String>() }
 
         Spacer(modifier = Modifier.weight(1f))
         TextFieldsView(name = name, word = word, words = words)
@@ -57,8 +57,8 @@ fun CollectionView(
                 )
             },
             onAddWordClicked = {
-                words.add(word.value.text)
-                word.value = TextFieldValue("")
+                words.add(word.value)
+                word.value = ""
             })
     }
 }
@@ -67,7 +67,7 @@ fun CollectionView(
 fun TextFieldsView(
     modifier: Modifier = Modifier,
     name: MutableState<TextFieldValue>,
-    word: MutableState<TextFieldValue>,
+    word: MutableState<String>,
     words: MutableList<String>
 ) {
     OutlinedTextFieldWordly(label = R.string.enter_collection_name) {
@@ -75,9 +75,10 @@ fun TextFieldsView(
     }
     OutlinedTextFieldWordly(
         modifier = Modifier.padding(top = 10.dp),
-        label = R.string.app_name
+        label = R.string.app_name,
+        value = word
     ) {
-        word.value = TextFieldValue(it)
+        word.value = it
     }
     Text(
         text = words.joinToString(", "),
