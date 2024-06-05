@@ -3,6 +3,8 @@ package com.saventiy.wordly.screens.collection.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
@@ -20,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.saventiy.wordly.R
@@ -31,8 +32,7 @@ import com.saventiy.wordly.views.SecondButton
 
 @Composable
 fun CollectionView(
-    modifier: Modifier = Modifier,
-    onCreateCollectionClicked: (String, MutableList<String>) -> Unit
+    modifier: Modifier = Modifier, onCreateCollectionClicked: (String, MutableList<String>) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -48,12 +48,10 @@ fun CollectionView(
         Spacer(modifier = Modifier.weight(1f))
         TextFieldsView(name = name, word = word, words = words)
         Spacer(modifier = Modifier.weight(1f))
-        ButtonsView(
-            isCreateCollectionButtonEnabled = !(name.value.text.isEmpty() || words.isEmpty()),
+        ButtonsView(isCreateCollectionButtonEnabled = !(name.value.text.isEmpty() || words.isEmpty()),
             onCreateCollectionClicked = {
                 onCreateCollectionClicked.invoke(
-                    name.value.text,
-                    words
+                    name.value.text, words
                 )
             },
             onAddWordClicked = {
@@ -63,6 +61,7 @@ fun CollectionView(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TextFieldsView(
     modifier: Modifier = Modifier,
@@ -74,19 +73,18 @@ fun TextFieldsView(
         name.value = TextFieldValue(it)
     }
     OutlinedTextFieldWordly(
-        modifier = Modifier.padding(top = 10.dp),
-        label = R.string.app_name,
-        value = word
+        modifier = Modifier.padding(top = 10.dp), label = R.string.app_name, value = word
     ) {
-        word.value = it
+        word.value = it.trim()
     }
-    Text(
-        text = words.joinToString(", "),
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 15.dp)
-    )
+
+    FlowRow(modifier = Modifier.padding(5.dp)) {
+        words.forEachIndexed { index, word ->
+            WordItem(title = word) {
+                words.removeAt(index)
+            }
+        }
+    }
 }
 
 @Composable
@@ -120,7 +118,6 @@ fun ButtonsView(
 @Preview
 @Composable
 fun Preview() {
-    CollectionView(
-        onCreateCollectionClicked = { _, _ -> })
+    CollectionView(onCreateCollectionClicked = { _, _ -> })
 }
 
