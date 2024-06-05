@@ -1,13 +1,11 @@
 package com.saventiy.wordly.screens.main.view
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,7 +30,6 @@ import com.saventiy.wordly.screens.collection.CollectionScreen
 import kotlinx.coroutines.launch
 
 @OptIn(
-    ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -72,6 +69,7 @@ fun MainView(
                     }
                 }
             }
+            //TODO remove items spacers because when deleting items, spaces still there
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -81,9 +79,16 @@ fun MainView(
                 item {
                     Spacer(modifier = Modifier.padding(8.dp))
                 }
-                items(count = collections.size) { index ->
+                items(count = collections.size, key = { it }) { index ->
                     val currentItem by rememberUpdatedState(index)
-                    CollectionItem(collection = collections[currentItem]) {}
+                    SwipeToDeleteContainer(
+                        item = collections[currentItem],
+                        onDelete = {
+                            onDeleteClicked.invoke(it)
+                        }
+                    ) { collection ->
+                        CollectionItem(collection = collection) {}
+                    }
                 }
                 item {
                     Spacer(modifier = Modifier.padding(25.dp))
