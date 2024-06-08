@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".App"
@@ -20,8 +21,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Wordly"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,13 +39,15 @@
                 tools:node="remove" />
         </provider>
 
-        <receiver android:name=".screens.widget.WordWidgetReceiver" android:exported="true">
+        <receiver
+            android:name=".screens.widget.WordWidgetReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/word_widget_info"/>
+                android:resource="@xml/word_widget_info" />
         </receiver>
     </application>
 
