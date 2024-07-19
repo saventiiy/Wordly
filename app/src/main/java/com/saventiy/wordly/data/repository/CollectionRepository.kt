@@ -7,7 +7,7 @@ interface CollectionRepository {
     suspend fun addCollection(collection: Collection)
     fun updateCollection(collection: Collection)
 
-    suspend fun deleteCollection(collection: Collection)
+    suspend fun deleteCollection(collectionName: String)
 
     fun getAllCollections(): Flow<List<Collection>>
     fun getCollection(id: Int): Flow<Collection>

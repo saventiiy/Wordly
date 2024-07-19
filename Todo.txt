@@ -1,0 +1,10 @@
+
+
+todo: 
+ - check if notifications are working
+ - fix notification
+ - make a redesign
+collections:
+ - edit
+ + remove
+ - 

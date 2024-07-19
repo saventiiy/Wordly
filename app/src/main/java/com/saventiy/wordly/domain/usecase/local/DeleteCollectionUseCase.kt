@@ -9,5 +9,5 @@ class DeleteCollectionUseCase @Inject constructor(
 ) {
 
     //what operator do???????????
-    suspend operator fun invoke(collection: Collection) = repository.deleteCollection(collection)
+    suspend operator fun invoke(collectionName: String) = repository.deleteCollection(collectionName)
 }

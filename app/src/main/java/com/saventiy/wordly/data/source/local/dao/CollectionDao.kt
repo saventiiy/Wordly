@@ -19,8 +19,8 @@ interface CollectionDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(collection: CollectionEntity)
 
-    @Delete
-    suspend fun delete(collection: CollectionEntity)
+    @Query("DELETE FROM collection_table WHERE name=:collectionName")
+    suspend fun delete(collectionName: String)
 
     @Query("SELECT * FROM collection_table")
     fun getAll(): Flow<List<CollectionEntity>>

@@ -1,5 +1,6 @@
 package com.saventiy.wordly.screens.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saventiy.wordly.data.model.dto.Collection
@@ -25,10 +26,9 @@ class MainViewModel @Inject constructor(
         .catch { e -> emit(MainUiState.Error(e)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainUiState.Loading)
 
-    //TODO why is not deleting
     fun deleteCollection(collection: Collection){
         viewModelScope.launch {
-            deleteCollectionUseCase.invoke(collection = collection)
+            deleteCollectionUseCase.invoke(collectionName = collection.name)
         }
     }
 }
