@@ -3,6 +3,7 @@ package com.saventiy.wordly.data.model.dto
 import com.saventiy.wordly.data.model.entity.CollectionEntity
 
 data class Collection(
+    var id: Int,
     var name: String,
     var collection: List<String>,
     var isActive: Boolean

@@ -104,6 +104,7 @@ fun CollectionItem(
 fun CollectionItemPreview() {
     CollectionItem(
         collection = Collection(
+            id = 0,
             name = "collection",
             collection = mutableListOf("word", "word1", "word2", "word3"),
             isActive = true

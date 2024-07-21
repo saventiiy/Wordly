@@ -18,6 +18,7 @@ data class CollectionEntity(
 ) {
     fun toCollection(): Collection =
         Collection(
+            id = this.id,
             name = this.name,
             collection = this.collection,
             isActive = this.isActive

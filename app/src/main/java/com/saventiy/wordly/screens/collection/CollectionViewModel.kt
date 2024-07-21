@@ -22,6 +22,7 @@ class CollectionViewModel @Inject constructor(private val addCollectionUseCase: 
         viewModelScope.launch {
             addCollectionUseCase.invoke(
                 collection = Collection(
+                    id = 0,
                     name = name,
                     collection = words,
                     isActive = true
